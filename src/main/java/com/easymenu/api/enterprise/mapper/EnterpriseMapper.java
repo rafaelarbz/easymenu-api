@@ -8,17 +8,16 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface EnterpriseMapper {
-    EnterpriseDTO toDTO(Enterprise enterprise);
-
     @Mapping(target = "parentEnterprise", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     Enterprise toEntity(EnterpriseDTO enterpriseDTO);
 
+    EnterpriseDTO toDTO(Enterprise enterprise);
+
     default TaxIdentifierType mapStringToEnum(String taxIdentifierType) {
         return TaxIdentifierType.valueOf(taxIdentifierType.toUpperCase());
     }
-
     default String mapEnumToString(TaxIdentifierType taxIdentifierType) {
         return taxIdentifierType.name();
     }

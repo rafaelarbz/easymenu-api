@@ -1,9 +1,10 @@
-package com.easymenu.api.enterprise.service;
+package com.easymenu.api.enterprise.service.implementation;
 
 import com.easymenu.api.enterprise.dto.EnterpriseDTO;
 import com.easymenu.api.enterprise.entity.Enterprise;
 import com.easymenu.api.enterprise.mapper.EnterpriseMapper;
 import com.easymenu.api.enterprise.repository.EnterpriseRepository;
+import com.easymenu.api.enterprise.service.EnterpriseService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,12 @@ import java.util.Objects;
 public class EnterpriseServiceImpl implements EnterpriseService {
     @Autowired private EnterpriseRepository enterpriseRepository;
     @Autowired private EnterpriseMapper enterpriseMapper;
+
+    @Override
+    public EnterpriseDTO findEnterpriseById(Long id) {
+        Enterprise enterprise = findById(id);
+        return enterpriseMapper.toDTO(enterprise);
+    }
 
     @Override
     public List<EnterpriseDTO> findAllEnterprises() {
@@ -36,6 +43,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
     @Override
     public EnterpriseDTO createEnterprise(EnterpriseDTO enterpriseDTO) {
+        isParentValid(enterpriseDTO);
         Enterprise createdEnterprise =
             enterpriseRepository.save(enterpriseMapper.toEntity(enterpriseDTO));
         return enterpriseMapper.toDTO(createdEnterprise);
@@ -48,12 +56,6 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         updateFields(enterprise, enterpriseDTO);
         Enterprise updatedEnterprise = enterpriseRepository.save(enterprise);
         return enterpriseMapper.toDTO(updatedEnterprise);
-    }
-
-    @Override
-    public EnterpriseDTO findEnterpriseById(Long id) {
-        Enterprise enterprise = findById(id);
-        return enterpriseMapper.toDTO(enterprise);
     }
 
     @Override
