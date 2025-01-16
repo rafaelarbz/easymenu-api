@@ -1,6 +1,7 @@
 package com.easymenu.api.menu.entity;
 
 import com.easymenu.api.enterprise.entity.Enterprise;
+import com.easymenu.api.order.entity.OrderItemRelation;
 import com.easymenu.api.shared.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -8,8 +9,10 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
+@Table(name = "menu_items")
 @Entity
 @Data
 @SuperBuilder
@@ -28,7 +31,7 @@ public class MenuItem extends BaseEntity {
     @Column(name = "menu_category_id")
     private Long menuCategoryId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_category_id", insertable = false, updatable = false)
     private MenuCategory menuCategory;
 
@@ -38,4 +41,7 @@ public class MenuItem extends BaseEntity {
 
     @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MenuItemRelation> menuItemRelations;
+
+    @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItemRelation> orderItemRelations;
 }

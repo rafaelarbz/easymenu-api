@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 
+@Table(name = "menu_item_relations")
 @Entity
 @Data
 @Builder

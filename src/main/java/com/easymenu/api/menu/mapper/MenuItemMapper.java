@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface MenuItemMapper {
     @Mapping(target = "menuCategory", ignore = true)
     @Mapping(target = "menuItemRelations", ignore = true)
+    @Mapping(target = "orderItemRelations", ignore = true)
     @Mapping(target = "enterprise", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)

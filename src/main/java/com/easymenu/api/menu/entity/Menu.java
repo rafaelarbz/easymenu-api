@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
 
+@Table(name = "menus")
 @Entity
 @Data
 @SuperBuilder

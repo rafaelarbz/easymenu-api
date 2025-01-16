@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+@Table(name = "menu_categories")
 @Entity
 @Data
 @SuperBuilder
