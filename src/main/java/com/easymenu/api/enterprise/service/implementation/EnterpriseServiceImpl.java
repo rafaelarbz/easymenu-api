@@ -43,6 +43,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
     @Override
     public EnterpriseDTO createEnterprise(EnterpriseDTO enterpriseDTO) {
+        validateTaxIdentifier(enterpriseDTO.taxIdentifier(), null);
         isParentValid(enterpriseDTO);
         Enterprise createdEnterprise =
             enterpriseRepository.save(enterpriseMapper.toEntity(enterpriseDTO));
@@ -52,6 +53,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Override
     public EnterpriseDTO updateEnterprise(Long id, EnterpriseDTO enterpriseDTO) {
         Enterprise enterprise = findById(id);
+        validateTaxIdentifier(enterpriseDTO.taxIdentifier(), id);
         isParentValid(enterpriseDTO);
         updateFields(enterprise, enterpriseDTO);
         Enterprise updatedEnterprise = enterpriseRepository.save(enterprise);
@@ -69,12 +71,27 @@ public class EnterpriseServiceImpl implements EnterpriseService {
             .orElseThrow(() -> new EntityNotFoundException("Enterprise not found with ID: " + id));
     }
 
+    private Enterprise findByTaxIdentifier(String taxIdentifier) {
+        return enterpriseRepository.findByTaxIdentifier(taxIdentifier).orElse(null);
+    }
+
     private void isParentValid(EnterpriseDTO enterpriseDTO) {
         if (Objects.nonNull(enterpriseDTO.parentId())) {
             if (!enterpriseRepository.existsById(enterpriseDTO.parentId())) {
                 throw new IllegalArgumentException("Parent enterprise not found with ID: " + enterpriseDTO.parentId());
             }
         }
+    }
+
+    private void validateTaxIdentifier(String taxIdentifier, Long id) {
+        Enterprise enterprise = findByTaxIdentifier(taxIdentifier);
+        if (Objects.isNull(enterprise)) {
+            return;
+        }
+        if (Objects.nonNull(id) && id.equals(enterprise.getId())) {
+            return;
+        }
+        throw new IllegalArgumentException("Tax identifier already exists: " + taxIdentifier);
     }
 
     private void updateFields(Enterprise enterprise, EnterpriseDTO enterpriseDTO) {

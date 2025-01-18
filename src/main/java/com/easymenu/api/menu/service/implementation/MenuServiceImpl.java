@@ -19,10 +19,10 @@ import java.util.Objects;
 @Slf4j
 @Service
 public class MenuServiceImpl implements MenuService {
-    @Autowired MenuRepository menuRepository;
-    @Autowired MenuItemRepository menuItemRepository;
-    @Autowired MenuMapper menuMapper;
-    @Autowired MenuItemMapper menuItemMapper;
+    @Autowired private MenuRepository menuRepository;
+    @Autowired private MenuItemRepository menuItemRepository;
+    @Autowired private MenuMapper menuMapper;
+    @Autowired private MenuItemMapper menuItemMapper;
 
     @Override
     public List<MenuDTO> findAllByEnterprise(Long id) {

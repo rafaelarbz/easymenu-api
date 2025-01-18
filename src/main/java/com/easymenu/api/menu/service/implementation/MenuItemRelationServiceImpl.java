@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class MenuItemRelationServiceImpl implements MenuItemRelationService {
-    @Autowired MenuRepository menuRepository;
-    @Autowired MenuItemRepository menuItemRepository;
-    @Autowired MenuItemRelationRepository menuItemRelationRepository;
+    @Autowired private MenuRepository menuRepository;
+    @Autowired private MenuItemRepository menuItemRepository;
+    @Autowired private MenuItemRelationRepository menuItemRelationRepository;
 
     @Override
     public void addRelation(Long menuId, Long menuItemId) {

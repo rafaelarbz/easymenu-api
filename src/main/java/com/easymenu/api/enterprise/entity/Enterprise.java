@@ -26,11 +26,14 @@ public class Enterprise {
     @Column(nullable = false)
     private TaxIdentifierType taxIdentifierType;
 
-    @Column(nullable = false, length = 14)
+    @Column(nullable = false, length = 14, unique = true)
     private String taxIdentifier;
 
     @Column(name = "parent_id")
     private Long parentId;
+
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private boolean active;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", insertable = false, updatable = false)

@@ -16,8 +16,8 @@ import java.util.Objects;
 @Slf4j
 @Service
 public class MenuCategoryServiceImpl implements MenuCategoryService {
-    @Autowired MenuCategoryRepository menuCategoryRepository;
-    @Autowired MenuCategoryMapper menuCategoryMapper;
+    @Autowired private MenuCategoryRepository menuCategoryRepository;
+    @Autowired private MenuCategoryMapper menuCategoryMapper;
 
     @Override
     public List<MenuCategoryDTO> findAllByEnterprise(Long id) {

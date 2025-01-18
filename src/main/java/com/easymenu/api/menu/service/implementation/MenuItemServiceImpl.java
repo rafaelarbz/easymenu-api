@@ -17,9 +17,9 @@ import java.util.Objects;
 @Slf4j
 @Service
 public class MenuItemServiceImpl implements MenuItemService {
-    @Autowired MenuItemRepository menuItemRepository;
-    @Autowired MenuItemMapper menuItemMapper;
-    @Autowired MenuCategoryRepository menuCategoryRepository;
+    @Autowired private MenuItemRepository menuItemRepository;
+    @Autowired private MenuItemMapper menuItemMapper;
+    @Autowired private MenuCategoryRepository menuCategoryRepository;
 
     @Override
     public List<MenuItemDTO> findAllByEnterprise(Long id) {
