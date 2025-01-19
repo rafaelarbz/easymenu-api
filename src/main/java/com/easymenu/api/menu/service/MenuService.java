@@ -11,5 +11,6 @@ public interface MenuService {
     MenuDTO findMenuById(Long id);
     MenuDTO createMenu(MenuDTO menuDTO);
     MenuDTO updateMenu(Long id, MenuDTO menuDTO);
+    void disableMenu(Long id, Long enterpriseId);
     void deleteMenu(Long id, Long enterpriseId);
 }

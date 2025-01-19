@@ -61,6 +61,13 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    public void disableMenu(Long id, Long enterpriseId) {
+        Menu menu = findByIdAndEnterprise(id, enterpriseId);
+        menu.setActive(false);
+        menuRepository.save(menu);
+    }
+
+    @Override
     public void deleteMenu(Long id, Long enterpriseId) {
         Menu menu = findByIdAndEnterprise(id, enterpriseId);
         menuRepository.deleteById(menu.getId());

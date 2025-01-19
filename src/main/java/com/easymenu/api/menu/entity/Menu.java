@@ -20,6 +20,9 @@ public class Menu extends BaseEntity {
 
     private String description;
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private boolean active;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enterprise_id", insertable = false, updatable = false)
     private Enterprise enterprise;

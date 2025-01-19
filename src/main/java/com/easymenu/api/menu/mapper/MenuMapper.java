@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface MenuMapper {
+    @Mapping(target = "active", ignore = true)
     @Mapping(target = "enterprise", ignore = true)
     @Mapping(target = "menuItemRelations", ignore = true)
     @Mapping(target = "createdAt", ignore = true)

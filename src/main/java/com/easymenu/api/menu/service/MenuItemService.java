@@ -11,5 +11,6 @@ public interface MenuItemService {
     MenuItemDTO findMenuItemById(Long id);
     MenuItemDTO createMenuItem(MenuItemDTO menuItemDTO);
     MenuItemDTO updateMenuItem(Long id, MenuItemDTO menuItemDTO);
+    void disableMenuItem(Long id, Long enterpriseId);
     void deleteMenuItem(Long id, Long enterpriseId);
 }

@@ -35,6 +35,9 @@ public class MenuItem extends BaseEntity {
     @JoinColumn(name = "menu_category_id", insertable = false, updatable = false)
     private MenuCategory menuCategory;
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private boolean active;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enterprise_id", insertable = false, updatable = false)
     private Enterprise enterprise;

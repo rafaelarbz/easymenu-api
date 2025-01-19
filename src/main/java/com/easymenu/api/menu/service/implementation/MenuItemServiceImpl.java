@@ -69,6 +69,13 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
+    public void disableMenuItem(Long id, Long enterpriseId) {
+        MenuItem menuItem = findByIdAndEnterprise(id, enterpriseId);
+        menuItem.setActive(false);
+        menuItemRepository.save(menuItem);
+    }
+
+    @Override
     public void deleteMenuItem(Long id, Long enterpriseId) {
         MenuItem menuItem = findByIdAndEnterprise(id, enterpriseId);
         menuItemRepository.deleteById(menuItem.getId());
