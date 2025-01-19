@@ -115,7 +115,7 @@ public class EnterpriseController {
         summary = "Disable an enterprise",
         description = "Disable an enterprise by its ID",
         responses = {
-            @ApiResponse(responseCode = "204", description = "Successfully disabled the enterprise"),
+            @ApiResponse(responseCode = "204", description = "Enterprise disabled successfully"),
             @ApiResponse(responseCode = "404", description = "Enterprise not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
         }
