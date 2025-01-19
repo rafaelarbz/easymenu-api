@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ import java.util.Objects;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
-    @Autowired private UserSecurity userSecurity;
+    @Autowired private UserDetailsService userDetailsService;
     @Autowired private JwtUtil jwtUtil;
 
 
@@ -29,7 +30,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        FilterChain filterChain) throws ServletException, IOException {
+
         final String token = extractAuthorizationHeader(request);
 
         if (Objects.isNull(token)) {
@@ -39,19 +44,23 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         final String userToken = jwtUtil.extractUsername(token);
 
-        if (Objects.isNull(userToken) && SecurityContextHolder.getContext().getAuthentication() == null) {
-            final UserDetails userDetails = userSecurity.loadUserByUsername(userToken);
+        if (Objects.nonNull(userToken) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(userToken);
 
             if (!jwtUtil.isTokenValid(token, userToken)) {
                 throw new UsernameNotFoundException("Failed to authenticate with access token");
             }
 
             final SecurityContext context = SecurityContextHolder.createEmptyContext();
+
             final UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             context.setAuthentication(authToken);
             SecurityContextHolder.setContext(context);
         }
+
+        filterChain.doFilter(request, response);
     }
 
     private String extractAuthorizationHeader(HttpServletRequest request) {

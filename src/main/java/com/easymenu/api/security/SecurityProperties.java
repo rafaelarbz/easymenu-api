@@ -12,5 +12,5 @@ public class SecurityProperties {
     @Value("${security.secret-key}")
     private String secretKey;
     @Value("${security.jwt-ttl}")
-    private Long jwtTtl;
+    private Integer jwtTtl;
 }
