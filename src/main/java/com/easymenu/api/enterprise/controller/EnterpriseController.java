@@ -30,7 +30,7 @@ public class EnterpriseController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EnterpriseDTO>> findAllEnterprises() {
         List<EnterpriseDTO> enterprises = enterpriseService.findAllEnterprises();
         if (enterprises.isEmpty()) {
@@ -55,6 +55,21 @@ public class EnterpriseController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(enterprises);
+    }
+
+    @Operation(
+        summary = "Retrieve an enterprise by ID",
+        description = "Retrieve a specific enterprise by its ID",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the enterprise"),
+            @ApiResponse(responseCode = "404", description = "Enterprise not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+        }
+    )
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<EnterpriseDTO> findEnterpriseById(@PathVariable Long id) {
+        EnterpriseDTO enterpriseDTO = enterpriseService.findEnterpriseById(id);
+        return ResponseEntity.ok(enterpriseDTO);
     }
 
     @Operation(
@@ -97,18 +112,18 @@ public class EnterpriseController {
     }
 
     @Operation(
-        summary = "Retrieve an enterprise by ID",
-        description = "Retrieve a specific enterprise by its ID",
+        summary = "Disable an enterprise",
+        description = "Disable an enterprise by its ID",
         responses = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved the enterprise"),
+            @ApiResponse(responseCode = "204", description = "Successfully disabled the enterprise"),
             @ApiResponse(responseCode = "404", description = "Enterprise not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EnterpriseDTO> findEnterpriseById(@PathVariable Long id) {
-        EnterpriseDTO enterpriseDTO = enterpriseService.findEnterpriseById(id);
-        return ResponseEntity.ok(enterpriseDTO);
+    @PatchMapping(value = "/{id}/disable")
+    public ResponseEntity<Void> disableEnterprise(@PathVariable Long id) {
+        enterpriseService.disableEnterprise(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(

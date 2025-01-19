@@ -10,5 +10,6 @@ public interface EnterpriseService {
     List<EnterpriseDTO> findAllByParentId(Long id);
     EnterpriseDTO createEnterprise(EnterpriseDTO enterpriseDTO);
     EnterpriseDTO updateEnterprise(Long id, EnterpriseDTO enterpriseDTO);
+    void disableEnterprise(Long id);
     void deleteEnterprise(Long id);
 }

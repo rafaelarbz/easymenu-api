@@ -61,6 +61,13 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
+    public void disableEnterprise(Long id) {
+        Enterprise enterprise = findById(id);
+        enterprise.setActive(false);
+        enterpriseRepository.save(enterprise);
+    }
+
+    @Override
     public void deleteEnterprise(Long id) {
         Enterprise enterprise = findById(id);
         enterpriseRepository.deleteById(enterprise.getId());
