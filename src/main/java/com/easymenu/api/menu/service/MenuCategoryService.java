@@ -7,7 +7,7 @@ import java.util.List;
 public interface MenuCategoryService {
     List<MenuCategoryDTO> findAllByEnterprise(Long id);
     MenuCategoryDTO findMenuCategoryById(Long id);
-    MenuCategoryDTO createMenu(MenuCategoryDTO menuCategoryDTOme);
-    MenuCategoryDTO updateMenu(Long id, MenuCategoryDTO menuCategoryDTO);
-    void deleteMenu(Long id, Long enterpriseId);
+    MenuCategoryDTO createMenuCategory(MenuCategoryDTO menuCategoryDTOme);
+    MenuCategoryDTO updateMenuCategory(Long id, MenuCategoryDTO menuCategoryDTO);
+    void deleteMenuCategory(Long id, Long enterpriseId);
 }

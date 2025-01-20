@@ -27,7 +27,6 @@ public class EnterpriseController {
         responses = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of enterprises"),
             @ApiResponse(responseCode = "404", description = "No enterprises found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,7 +44,6 @@ public class EnterpriseController {
         responses = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of enterprises"),
             @ApiResponse(responseCode = "404", description = "No enterprises found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @GetMapping(value = "/{id}/associates", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,7 +61,6 @@ public class EnterpriseController {
         responses = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the enterprise"),
             @ApiResponse(responseCode = "404", description = "Enterprise not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,7 +75,6 @@ public class EnterpriseController {
         responses = {
             @ApiResponse(responseCode = "201", description = "Successfully created the enterprise"),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @PostMapping(
@@ -97,7 +93,6 @@ public class EnterpriseController {
             @ApiResponse(responseCode = "200", description = "Successfully updated the enterprise"),
             @ApiResponse(responseCode = "404", description = "Enterprise not found"),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @PatchMapping(
@@ -117,7 +112,6 @@ public class EnterpriseController {
         responses = {
             @ApiResponse(responseCode = "204", description = "Enterprise disabled successfully"),
             @ApiResponse(responseCode = "404", description = "Enterprise not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @PatchMapping(value = "/{id}/disable")
@@ -132,7 +126,6 @@ public class EnterpriseController {
         responses = {
             @ApiResponse(responseCode = "204", description = "Successfully deleted the enterprise"),
             @ApiResponse(responseCode = "404", description = "Enterprise not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @DeleteMapping("/{id}")

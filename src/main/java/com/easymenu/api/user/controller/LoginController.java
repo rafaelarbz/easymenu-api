@@ -37,7 +37,6 @@ public class LoginController {
         responses = {
             @ApiResponse(responseCode = "200", description = "Successful login"),
             @ApiResponse(responseCode = "401", description = "Unauthorized user"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @PostMapping(

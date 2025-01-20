@@ -27,10 +27,9 @@ public class UserController {
         responses = {
             @ApiResponse(responseCode = "200", description = "List of users retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "No users found for the specified enterprise ID"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
-    @GetMapping(value = "/{id}/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/enterprise/{id}/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> findAllByEnterprise(@PathVariable Long id) {
         List<UserDTO> users = userService.findAllByEnterprise(id);
         if (users.isEmpty()) {
@@ -45,7 +44,6 @@ public class UserController {
         responses = {
             @ApiResponse(responseCode = "200", description = "User details retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,7 +58,6 @@ public class UserController {
         responses = {
             @ApiResponse(responseCode = "201", description = "User created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -76,7 +73,6 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "User updated successfully"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @PatchMapping(
@@ -96,7 +92,6 @@ public class UserController {
         responses = {
             @ApiResponse(responseCode = "204", description = "User disabled successfully"),
             @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @PatchMapping(value = "/{id}/disable")
@@ -111,7 +106,6 @@ public class UserController {
         responses = {
             @ApiResponse(responseCode = "204", description = "User deleted successfully"),
             @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
         }
     )
     @DeleteMapping(value = "/{id}")

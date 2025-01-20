@@ -34,14 +34,14 @@ public class MenuCategoryServiceImpl implements MenuCategoryService {
     }
 
     @Override
-    public MenuCategoryDTO createMenu(MenuCategoryDTO menuCategoryDTO) {
+    public MenuCategoryDTO createMenuCategory(MenuCategoryDTO menuCategoryDTO) {
         MenuCategory menuCategory =
             menuCategoryRepository.save(menuCategoryMapper.toEntity(menuCategoryDTO));
         return menuCategoryMapper.toDTO(menuCategory);
     }
 
     @Override
-    public MenuCategoryDTO updateMenu(Long id, MenuCategoryDTO menuCategoryDTO) {
+    public MenuCategoryDTO updateMenuCategory(Long id, MenuCategoryDTO menuCategoryDTO) {
         MenuCategory menuCategory = findByIdAndEnterprise(id, menuCategoryDTO.enterpriseId());
         updateFields(menuCategory, menuCategoryDTO);
         MenuCategory updatedMenuCategory = menuCategoryRepository.save(menuCategory);
@@ -49,7 +49,7 @@ public class MenuCategoryServiceImpl implements MenuCategoryService {
     }
 
     @Override
-    public void deleteMenu(Long id, Long enterpriseId) {
+    public void deleteMenuCategory(Long id, Long enterpriseId) {
         MenuCategory menuCategory = findByIdAndEnterprise(id, enterpriseId);
         menuCategoryRepository.deleteById(menuCategory.getId());
     }
