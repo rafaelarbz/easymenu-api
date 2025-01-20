@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> findAllByEnterprise(Long id) {
-        return userRepository.findByEnterpriseId(id)
+        return userRepository.findAllByEnterpriseId(id)
             .stream()
             .map(userMapper::toDTO)
             .toList();
