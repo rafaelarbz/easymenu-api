@@ -9,11 +9,13 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 
 @Service
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     @Autowired PasswordEncoder passwordEncoder;
     @Autowired private UserRepository userRepository;
@@ -34,6 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO createUser(UserDTO userDTO) {
         validateCpf(userDTO.cpf(), null);
 
@@ -45,6 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO updateUser(Long id, UserDTO userDTO) {
         User user = findById(id);
         validateCpf(userDTO.cpf(), id);
@@ -54,6 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void disableUser(Long id, Long enterpriseId) {
         User user = findByIdAndEnterprise(id, enterpriseId);
         user.setActive(false);
@@ -61,6 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id, Long enterpriseId) {
         User user = findByIdAndEnterprise(id, enterpriseId);
         userRepository.deleteById(user.getId());

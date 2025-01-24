@@ -6,15 +6,15 @@ import com.easymenu.api.enterprise.mapper.EnterpriseMapper;
 import com.easymenu.api.enterprise.repository.EnterpriseRepository;
 import com.easymenu.api.enterprise.service.EnterpriseService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
 @Service
+@Transactional(readOnly = true)
 public class EnterpriseServiceImpl implements EnterpriseService {
     @Autowired private EnterpriseRepository enterpriseRepository;
     @Autowired private EnterpriseMapper enterpriseMapper;
@@ -42,6 +42,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
+    @Transactional
     public EnterpriseDTO createEnterprise(EnterpriseDTO enterpriseDTO) {
         validateTaxIdentifier(enterpriseDTO.taxIdentifier(), null);
         isParentValid(enterpriseDTO);
@@ -51,6 +52,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
+    @Transactional
     public EnterpriseDTO updateEnterprise(Long id, EnterpriseDTO enterpriseDTO) {
         Enterprise enterprise = findById(id);
         validateTaxIdentifier(enterpriseDTO.taxIdentifier(), id);
@@ -61,6 +63,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
+    @Transactional
     public void disableEnterprise(Long id) {
         Enterprise enterprise = findById(id);
         enterprise.setActive(false);
@@ -68,6 +71,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
     @Override
+    @Transactional
     public void deleteEnterprise(Long id) {
         Enterprise enterprise = findById(id);
         enterpriseRepository.deleteById(enterprise.getId());

@@ -9,15 +9,15 @@ import com.easymenu.api.menu.repository.MenuItemRepository;
 import com.easymenu.api.menu.repository.MenuRepository;
 import com.easymenu.api.menu.service.MenuService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
 @Service
+@Transactional(readOnly = true)
 public class MenuServiceImpl implements MenuService {
     @Autowired private MenuRepository menuRepository;
     @Autowired private MenuItemRepository menuItemRepository;
@@ -47,12 +47,14 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @Transactional
     public MenuDTO createMenu(MenuDTO menuDTO) {
         Menu menu = menuRepository.save(menuMapper.toEntity(menuDTO));
         return menuMapper.toDTO(menu);
     }
 
     @Override
+    @Transactional
     public MenuDTO updateMenu(Long id, MenuDTO menuDTO) {
         Menu menu = findByIdAndEnterprise(id, menuDTO.enterpriseId());
         updateFields(menu, menuDTO);
@@ -61,6 +63,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @Transactional
     public void disableMenu(Long id, Long enterpriseId) {
         Menu menu = findByIdAndEnterprise(id, enterpriseId);
         menu.setActive(false);
@@ -68,6 +71,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @Transactional
     public void deleteMenu(Long id, Long enterpriseId) {
         Menu menu = findByIdAndEnterprise(id, enterpriseId);
         menuRepository.deleteById(menu.getId());

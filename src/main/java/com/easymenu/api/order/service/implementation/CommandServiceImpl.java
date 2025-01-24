@@ -10,10 +10,12 @@ import com.easymenu.api.order.service.CommonService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class CommandServiceImpl implements CommonService {
     @Autowired CommandRepository commandRepository;
     @Autowired CommandMapper commandMapper;
@@ -33,6 +35,7 @@ public class CommandServiceImpl implements CommonService {
     }
 
     @Override
+    @Transactional
     public List<CommonResponseDTO> createEntityBatch(CommonRequestBatchDTO commonRequestBatchDTO) {
         List<Command> commands = commonRequestBatchDTO.codes()
             .stream()
@@ -48,6 +51,7 @@ public class CommandServiceImpl implements CommonService {
     }
 
     @Override
+    @Transactional
     public CommonResponseDTO updateEntity(Long id, Long enterpriseId, CommonRequestDTO commonRequestDTO) {
         Command command = findByIdAndEnterprise(id, enterpriseId);
         command.setCode(commonRequestDTO.code());
@@ -56,6 +60,7 @@ public class CommandServiceImpl implements CommonService {
     }
 
     @Override
+    @Transactional
     public void changeAvailability(Long id, Long enterpriseId) {
         Command command = findByIdAndEnterprise(id, enterpriseId);
         command.setAvailable(!command.isAvailable());

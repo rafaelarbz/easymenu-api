@@ -5,18 +5,19 @@ import com.easymenu.api.menu.repository.MenuItemRelationRepository;
 import com.easymenu.api.menu.repository.MenuItemRepository;
 import com.easymenu.api.menu.repository.MenuRepository;
 import com.easymenu.api.menu.service.MenuItemRelationService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
+@Transactional(readOnly = true)
 public class MenuItemRelationServiceImpl implements MenuItemRelationService {
     @Autowired private MenuRepository menuRepository;
     @Autowired private MenuItemRepository menuItemRepository;
     @Autowired private MenuItemRelationRepository menuItemRelationRepository;
 
     @Override
+    @Transactional
     public void addRelation(Long menuId, Long menuItemId) {
         menuExists(menuId);
         menuItemExists(menuItemId);
@@ -25,6 +26,7 @@ public class MenuItemRelationServiceImpl implements MenuItemRelationService {
     }
 
     @Override
+    @Transactional
     public void changeMenuItemAvailability(Long menuId, Long menuItemId) {
         MenuItemRelation menuItemRelation = relationExists(menuId, menuItemId);
         menuItemRelation.setAvailable(!menuItemRelation.getAvailable());

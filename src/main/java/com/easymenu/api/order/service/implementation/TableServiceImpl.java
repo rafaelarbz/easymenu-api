@@ -12,12 +12,16 @@ import com.easymenu.api.shared.service.QRCodeService;
 import com.google.zxing.WriterException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
 
 import static com.easymenu.api.shared.utils.StringsUtil.URL_API;
 
+@Service
+@Transactional(readOnly = true)
 public class TableServiceImpl implements CommonService {
     @Autowired TableRepository tableRepository;
     @Autowired TableMapper tableMapper;
@@ -38,6 +42,7 @@ public class TableServiceImpl implements CommonService {
     }
 
     @Override
+    @Transactional
     public List<CommonResponseDTO> createEntityBatch(CommonRequestBatchDTO commonRequestBatchDTO) {
         List<Table> tables = commonRequestBatchDTO.codes()
             .stream()
@@ -53,6 +58,7 @@ public class TableServiceImpl implements CommonService {
     }
 
     @Override
+    @Transactional
     public CommonResponseDTO updateEntity(Long id, Long enterpriseId, CommonRequestDTO commonRequestDTO) {
         Table table = findByIdAndEnterprise(id, enterpriseId);
         table.setCode(commonRequestDTO.code());
@@ -61,6 +67,7 @@ public class TableServiceImpl implements CommonService {
     }
 
     @Override
+    @Transactional
     public void changeAvailability(Long id, Long enterpriseId) {
         Table table = findByIdAndEnterprise(id, enterpriseId);
         table.setAvailable(!table.isAvailable());

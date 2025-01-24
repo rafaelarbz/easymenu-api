@@ -6,15 +6,15 @@ import com.easymenu.api.menu.mapper.MenuCategoryMapper;
 import com.easymenu.api.menu.repository.MenuCategoryRepository;
 import com.easymenu.api.menu.service.MenuCategoryService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
 @Service
+@Transactional(readOnly = true)
 public class MenuCategoryServiceImpl implements MenuCategoryService {
     @Autowired private MenuCategoryRepository menuCategoryRepository;
     @Autowired private MenuCategoryMapper menuCategoryMapper;
@@ -34,6 +34,7 @@ public class MenuCategoryServiceImpl implements MenuCategoryService {
     }
 
     @Override
+    @Transactional
     public MenuCategoryDTO createMenuCategory(MenuCategoryDTO menuCategoryDTO) {
         MenuCategory menuCategory =
             menuCategoryRepository.save(menuCategoryMapper.toEntity(menuCategoryDTO));
@@ -41,6 +42,7 @@ public class MenuCategoryServiceImpl implements MenuCategoryService {
     }
 
     @Override
+    @Transactional
     public MenuCategoryDTO updateMenuCategory(Long id, MenuCategoryDTO menuCategoryDTO) {
         MenuCategory menuCategory = findByIdAndEnterprise(id, menuCategoryDTO.enterpriseId());
         updateFields(menuCategory, menuCategoryDTO);
@@ -49,6 +51,7 @@ public class MenuCategoryServiceImpl implements MenuCategoryService {
     }
 
     @Override
+    @Transactional
     public void deleteMenuCategory(Long id, Long enterpriseId) {
         MenuCategory menuCategory = findByIdAndEnterprise(id, enterpriseId);
         menuCategoryRepository.deleteById(menuCategory.getId());
