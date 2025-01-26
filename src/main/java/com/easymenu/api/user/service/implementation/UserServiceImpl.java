@@ -17,7 +17,7 @@ import java.util.Objects;
 @Service
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
-    @Autowired PasswordEncoder passwordEncoder;
+    @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private UserRepository userRepository;
     @Autowired private UserMapper userMapper;
 

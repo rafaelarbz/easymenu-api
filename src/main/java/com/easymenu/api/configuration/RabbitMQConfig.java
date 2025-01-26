@@ -20,7 +20,6 @@ public class RabbitMQConfig {
     public static final String QUEUE_MENU_ITEMS_UPDATED = "menu.items.updated.queue";
     public static final String ROUTING_KEY_MENU_ITEMS_UPDATED = "menu.items.updated";
 
-
     public static final String EXCHANGE_TABLES = "tables.exchange";
     public static final String QUEUE_TABLES_UPDATED = "tables.updated.queue";
     public static final String ROUTING_KEY_TABLES_UPDATED = "tables.updated";

@@ -7,18 +7,22 @@ import com.easymenu.api.order.entity.Command;
 import com.easymenu.api.order.mapper.CommandMapper;
 import com.easymenu.api.order.repository.CommandRepository;
 import com.easymenu.api.order.service.CommonService;
+import com.easymenu.api.shared.service.WebSocketService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Qualifier("commandService")
 @Transactional(readOnly = true)
 public class CommandServiceImpl implements CommonService {
-    @Autowired CommandRepository commandRepository;
-    @Autowired CommandMapper commandMapper;
+    @Autowired private CommandRepository commandRepository;
+    @Autowired private CommandMapper commandMapper;
+    @Autowired private WebSocketService webSocketService;
 
     @Override
     public CommonResponseDTO findEntityById(Long id) {
@@ -56,7 +60,11 @@ public class CommandServiceImpl implements CommonService {
         Command command = findByIdAndEnterprise(id, enterpriseId);
         command.setCode(commonRequestDTO.code());
         Command updatedCommand = commandRepository.save(command);
-        return commandMapper.toDTO(updatedCommand);
+
+        CommonResponseDTO updatedCommandDTO = commandMapper.toDTO(updatedCommand);
+
+        webSocketService.sendCommandUpdated(updatedCommandDTO);
+        return updatedCommandDTO;
     }
 
     @Override
@@ -65,6 +73,8 @@ public class CommandServiceImpl implements CommonService {
         Command command = findByIdAndEnterprise(id, enterpriseId);
         command.setAvailable(!command.isAvailable());
         commandRepository.save(command);
+
+        webSocketService.sendCommandUpdated(commandMapper.toDTO(command));
     }
 
     private Command findById(Long id) {

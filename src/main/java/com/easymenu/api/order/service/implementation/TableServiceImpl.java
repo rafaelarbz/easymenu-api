@@ -9,9 +9,11 @@ import com.easymenu.api.order.mapper.TableMapper;
 import com.easymenu.api.order.repository.TableRepository;
 import com.easymenu.api.order.service.CommonService;
 import com.easymenu.api.shared.service.QRCodeService;
+import com.easymenu.api.shared.service.WebSocketService;
 import com.google.zxing.WriterException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +23,13 @@ import java.util.List;
 import static com.easymenu.api.shared.utils.StringsUtil.URL_API;
 
 @Service
+@Qualifier("tableService")
 @Transactional(readOnly = true)
 public class TableServiceImpl implements CommonService {
-    @Autowired TableRepository tableRepository;
-    @Autowired TableMapper tableMapper;
-    @Autowired QRCodeService qrCodeService;
+    @Autowired private TableRepository tableRepository;
+    @Autowired private TableMapper tableMapper;
+    @Autowired private QRCodeService qrCodeService;
+    @Autowired private WebSocketService webSocketService;
 
     @Override
     public CommonResponseDTO findEntityById(Long id) {
@@ -63,7 +67,11 @@ public class TableServiceImpl implements CommonService {
         Table table = findByIdAndEnterprise(id, enterpriseId);
         table.setCode(commonRequestDTO.code());
         Table updatedTable = tableRepository.save(table);
-        return tableMapper.toDTO(updatedTable);
+
+        CommonResponseDTO updatedTableDTO = tableMapper.toDTO(updatedTable);
+
+        webSocketService.sendTableUpdated(updatedTableDTO);
+        return updatedTableDTO;
     }
 
     @Override
@@ -72,6 +80,8 @@ public class TableServiceImpl implements CommonService {
         Table table = findByIdAndEnterprise(id, enterpriseId);
         table.setAvailable(!table.isAvailable());
         tableRepository.save(table);
+
+        webSocketService.sendTableUpdated(tableMapper.toDTO(table));
     }
 
     public byte[] generateQRCode(Long id, TableQRCodeDTO tableQRCodeDTO) throws IOException, WriterException {

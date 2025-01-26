@@ -6,6 +6,7 @@ import com.easymenu.api.menu.mapper.MenuItemMapper;
 import com.easymenu.api.menu.repository.MenuCategoryRepository;
 import com.easymenu.api.menu.repository.MenuItemRepository;
 import com.easymenu.api.menu.service.MenuItemService;
+import com.easymenu.api.shared.service.WebSocketService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     @Autowired private MenuItemRepository menuItemRepository;
     @Autowired private MenuItemMapper menuItemMapper;
     @Autowired private MenuCategoryRepository menuCategoryRepository;
+    @Autowired private WebSocketService webSocketService;
 
     @Override
     public List<MenuItemDTO> findAllByEnterprise(Long id) {
@@ -65,9 +67,14 @@ public class MenuItemServiceImpl implements MenuItemService {
     public MenuItemDTO updateMenuItem(Long id, MenuItemDTO menuItemDTO) {
         MenuItem menuItem = findByIdAndEnterprise(id, menuItemDTO.enterpriseId());
         menuCategoryExists(menuItem.getMenuCategoryId());
+
         updateFields(menuItem, menuItemDTO);
         MenuItem updatedMenuItem = menuItemRepository.save(menuItem);
-        return menuItemMapper.toDTO(updatedMenuItem);
+
+        MenuItemDTO updatedMenuItemDTO = menuItemMapper.toDTO(updatedMenuItem);
+
+        webSocketService.sendMenuItemUpdated(updatedMenuItemDTO);
+        return updatedMenuItemDTO;
     }
 
     @Override
@@ -76,6 +83,8 @@ public class MenuItemServiceImpl implements MenuItemService {
         MenuItem menuItem = findByIdAndEnterprise(id, enterpriseId);
         menuItem.setActive(false);
         menuItemRepository.save(menuItem);
+
+        webSocketService.sendMenuItemUpdated(menuItemMapper.toDTO(menuItem));
     }
 
     @Override
