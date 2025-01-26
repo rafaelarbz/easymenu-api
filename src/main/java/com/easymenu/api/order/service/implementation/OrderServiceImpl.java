@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> findAllNotPaidByEnterprise(Long id) {
+    public List<OrderDTO> findAllUnpaidByEnterprise(Long id) {
         return orderRepository.findAllByEnterpriseIdAndPaidFalse(id)
             .stream()
             .map(orderMapper::toDTO)
@@ -138,6 +138,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDTO updateOrderStatus(Long id, String orderStatus) {
+        if (!OrderStatus.isValidStatus(orderStatus)) {
+            throw new IllegalArgumentException("Invalid status: " + orderStatus);
+        }
+
         Order order = findById(id);
         order.setStatus(orderMapper.mapStringToEnum(orderStatus));
 

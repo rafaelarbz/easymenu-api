@@ -4,13 +4,12 @@ import com.easymenu.api.order.dto.OrderCreationDTO;
 import com.easymenu.api.order.dto.OrderDTO;
 import com.easymenu.api.order.dto.OrderItemCreationDTO;
 import com.easymenu.api.order.dto.OrderItemResponseDTO;
-import com.easymenu.api.order.enums.OrderStatus;
 
 import java.util.List;
 
 public interface OrderService {
     List<OrderDTO> findAllByEnterprise(Long id);
-    List<OrderDTO> findAllNotPaidByEnterprise(Long id);
+    List<OrderDTO> findAllUnpaidByEnterprise(Long id);
     List<OrderItemResponseDTO> findItemsByOrder(Long id);
     OrderDTO findLastOrderByTable(Long tableId);
     OrderDTO findLastOrderByCommand(Long commandId);
