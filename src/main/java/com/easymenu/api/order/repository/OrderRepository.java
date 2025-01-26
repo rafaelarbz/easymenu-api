@@ -7,11 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByEnterpriseId(Long id);
     List<Order> findAllByEnterpriseIdAndPaidFalse(Long id);
+    Optional<Order> findByTableIdAndPaidFalse(Long id);
+    Optional<Order> findByCommandIdAndPaidFalse(Long id);
+    Optional<Order> findByTableIdAndCommandIdAndPaidFalse(Long tableId, Long commandId);
     Order findFirstByTableIdOrderByIdDesc(Long tableId);
     Order findFirstByCommandIdOrderByIdDesc(Long commandId);
 

@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,8 +35,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired private OrderMapper orderMapper;
     @Autowired private WebSocketService webSocketService;
 
+    @Autowired
     @Qualifier("tableService")
-    @Autowired private CommonService tableService;
+    private CommonService tableService;
     @Qualifier("commandService")
     @Autowired private CommonService commandService;
 
@@ -75,6 +77,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDTO createOrder(OrderCreationDTO orderCreationDTO) {
+        Optional<Order> existingOrder =
+            findExistingOrder(orderCreationDTO.tableId(), orderCreationDTO.commandId());
+
+        if (existingOrder.isPresent()) {
+            return addOrderItems(existingOrder.get().getId(), orderCreationDTO.items());
+        }
+
         Order order = buildOrder(orderCreationDTO);
         Order createdOrder = orderRepository.save(order);
 
@@ -220,5 +229,18 @@ public class OrderServiceImpl implements OrderService {
                         .build();
             })
             .toList();
+    }
+
+    private Optional<Order> findExistingOrder(Long tableId, Long commandId) {
+        if (Objects.nonNull(tableId) && Objects.nonNull(commandId)) {
+            return orderRepository.findByTableIdAndCommandIdAndPaidFalse(tableId, commandId);
+        }
+        if (Objects.nonNull(tableId)) {
+            return orderRepository.findByTableIdAndPaidFalse(tableId);
+        }
+        if (Objects.nonNull(commandId)) {
+            return orderRepository.findByCommandIdAndPaidFalse(commandId);
+        }
+        return Optional.empty();
     }
 }

@@ -57,7 +57,8 @@ public class SecurityConfig {
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
                         "/auth/**",
-                        "/order").permitAll()
+                        "/order",
+                        "/menu/enterprise/*/all").permitAll()
                     .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())

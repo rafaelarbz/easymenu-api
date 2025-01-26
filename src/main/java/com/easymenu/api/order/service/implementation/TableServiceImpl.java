@@ -3,7 +3,7 @@ package com.easymenu.api.order.service.implementation;
 import com.easymenu.api.order.dto.CommonRequestBatchDTO;
 import com.easymenu.api.order.dto.CommonRequestDTO;
 import com.easymenu.api.order.dto.CommonResponseDTO;
-import com.easymenu.api.order.dto.TableQRCodeDTO;
+import com.easymenu.api.order.dto.CommonQRCodeDTO;
 import com.easymenu.api.order.entity.Table;
 import com.easymenu.api.order.mapper.TableMapper;
 import com.easymenu.api.order.repository.TableRepository;
@@ -14,6 +14,7 @@ import com.google.zxing.WriterException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.util.List;
 import static com.easymenu.api.shared.utils.StringsUtil.URL_API;
 
 @Service
+@Primary
 @Qualifier("tableService")
 @Transactional(readOnly = true)
 public class TableServiceImpl implements CommonService {
@@ -84,7 +86,8 @@ public class TableServiceImpl implements CommonService {
         webSocketService.sendTableUpdated(tableMapper.toDTO(table));
     }
 
-    public byte[] generateQRCode(Long id, TableQRCodeDTO tableQRCodeDTO) throws IOException, WriterException {
+    @Override
+    public byte[] generateQRCode(Long id, CommonQRCodeDTO commonQRCodeDTO) throws IOException, WriterException {
         Table table = findById(id);
         String content = String.format(
             URL_API + "/menu/enterprise/%d/all?tableId=%d",
@@ -92,8 +95,8 @@ public class TableServiceImpl implements CommonService {
             table.getId());
         return qrCodeService.generateQRCodeImage(
             content,
-            tableQRCodeDTO.width(),
-            tableQRCodeDTO.height());
+            commonQRCodeDTO.width(),
+            commonQRCodeDTO.height());
     }
 
     private Table findById(Long id) {
